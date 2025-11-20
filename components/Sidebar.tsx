@@ -14,13 +14,14 @@ const Sidebar: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('hasSubscription');
     navigate('/login');
   };
 
   return (
-    <div className="w-64 bg-black/30 backdrop-blur-md border-r border-white/10 flex flex-col h-screen fixed left-0 top-0">
+    <div className="w-64 bg-black/30 backdrop-blur-md border-r border-white/10 flex flex-col h-screen fixed left-0 top-0 z-50">
       <div className="p-6 flex items-center gap-3">
-        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center font-bold text-white">
+        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center font-bold text-white shadow-lg shadow-green-500/30">
           W
         </div>
         <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">

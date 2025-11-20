@@ -50,35 +50,35 @@ const Login: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1614728853975-69c960f7274f?q=80&w=2574&auto=format&fit=crop')] bg-cover bg-center relative">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
       
-      <div className="glass-panel p-8 w-full max-w-md relative z-10">
-        <h2 className="text-3xl font-bold text-center mb-6">ChatBot Host Pro</h2>
+      <div className="glass-panel p-8 w-full max-w-md relative z-10 animate-fade-in">
+        <h2 className="text-3xl font-bold text-center mb-6 text-white">ChatBot Host Pro</h2>
         
         {error && <div className="bg-red-500/20 border border-red-500/50 text-red-200 p-3 rounded mb-4 text-center text-sm">{error}</div>}
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-2">Usuário</label>
+            <label className="block text-sm font-medium mb-2 text-gray-300">Usuário</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-blue-500 text-white"
+              className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-blue-500 text-white transition-colors"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-2">Senha</label>
+            <label className="block text-sm font-medium mb-2 text-gray-300">Senha</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-blue-500 text-white"
+              className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-blue-500 text-white transition-colors"
             />
           </div>
           
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-3 rounded-lg transition-all transform hover:scale-[1.02] shadow-lg"
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-3 rounded-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-blue-500/20"
           >
             Entrar
           </button>

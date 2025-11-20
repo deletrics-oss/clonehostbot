@@ -13,7 +13,7 @@ const Register: React.FC = () => {
     // Simulate registration API call
     await api.register(formData);
     
-    // Store auth state locally for demo purposes (since backend is single-tenant for now)
+    // Store auth state locally for demo purposes
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('username', formData.username);
     

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import DeviceManager from '../components/DeviceManager';
 import { api } from '../services/api';
@@ -52,7 +51,6 @@ const Dashboard: React.FC = () => {
       ws.onclose = () => setSocketConnected(false);
       
       ws.onerror = (error) => {
-        // WebSocket onerror events give very little detail, but we catch the initial constructor error in the catch block
         console.error("WebSocket error observed:", error);
         setSocketConnected(false);
       };
@@ -117,7 +115,7 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex gap-6 flex-col">
+    <div className="h-full flex gap-6 flex-col animate-fade-in">
       {apiError && (
         <div className="bg-red-500/20 border border-red-500 text-red-200 px-4 py-2 rounded-lg flex items-center gap-2 animate-in slide-in-from-top-2">
           <span>⚠️</span>
@@ -135,11 +133,11 @@ const Dashboard: React.FC = () => {
           {/* Status Cards */}
           <div className="grid grid-cols-2 gap-4">
              <div className="glass-panel p-4 flex items-center gap-3">
-               <div className={`w-3 h-3 rounded-full ${socketConnected ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'bg-red-500'}`} />
+               <div className={`w-3 h-3 rounded-full transition-all duration-300 ${socketConnected ? 'bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)]' : 'bg-red-500'}`} />
                <span className="font-bold text-sm">WebSocket</span>
              </div>
              <div className="glass-panel p-4 flex items-center gap-3">
-               <div className={`w-3 h-3 rounded-full ${geminiStatus === 'OK' ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'bg-red-500'}`} />
+               <div className={`w-3 h-3 rounded-full transition-all duration-300 ${geminiStatus === 'OK' ? 'bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)]' : 'bg-red-500'}`} />
                <span className="font-bold text-sm">Gemini AI</span>
              </div>
           </div>
@@ -157,42 +155,53 @@ const Dashboard: React.FC = () => {
 
         {/* Right Col: Chat */}
         <div className="w-2/3 glass-panel flex flex-col overflow-hidden">
-          <div className="p-4 border-b border-white/10 bg-white/5">
-            <h2 className="font-bold text-lg">Monitoramento em Tempo Real</h2>
-            <p className="text-xs text-gray-400">{selectedSessionId ? `Sessão: ${selectedSessionId}` : 'Selecione um dispositivo'}</p>
+          <div className="p-4 border-b border-white/10 bg-white/5 flex justify-between items-center">
+            <div>
+              <h2 className="font-bold text-lg">Monitoramento em Tempo Real</h2>
+              <p className="text-xs text-gray-400">{selectedSessionId ? `Sessão: ${selectedSessionId}` : 'Selecione um dispositivo'}</p>
+            </div>
+            {selectedSessionId && <div className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold">Online</div>}
           </div>
           
           <div className="flex-1 flex overflow-hidden">
             {/* Chat List */}
-            <div className="w-1/3 border-r border-white/10 overflow-y-auto">
+            <div className="w-1/3 border-r border-white/10 overflow-y-auto custom-scrollbar">
                {chats.map(chat => (
                  <div 
                    key={chat} 
                    onClick={() => { setActiveChat(chat); setMessages([]); }}
-                   className={`p-4 cursor-pointer hover:bg-white/5 ${activeChat === chat ? 'bg-blue-600/20' : ''}`}
+                   className={`p-4 cursor-pointer hover:bg-white/5 border-b border-white/5 transition-colors ${activeChat === chat ? 'bg-blue-600/20 border-l-4 border-l-blue-500' : ''}`}
                  >
-                   {chat}
+                   <div className="font-medium text-sm">{chat}</div>
+                   <div className="text-xs text-gray-500 truncate">Ver conversa</div>
                  </div>
                ))}
-               {chats.length === 0 && <div className="p-4 text-gray-500 text-sm">Nenhuma conversa ativa</div>}
+               {chats.length === 0 && <div className="p-4 text-center text-gray-500 text-sm mt-4">Nenhuma conversa ativa</div>}
             </div>
 
             {/* Message View */}
             <div className="flex-1 flex flex-col bg-black/20">
-               <div className="flex-1 p-4 overflow-y-auto space-y-3">
+               <div className="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar">
                  {activeChat ? (
-                   messages.map((m, i) => (
-                     <div key={i} className={`flex ${m.isMine ? 'justify-end' : 'justify-start'}`}>
-                       <div className={`max-w-[70%] p-3 rounded-lg ${m.isMine ? 'bg-blue-600' : 'bg-gray-700'}`}>
-                         <p className="text-sm">{m.body}</p>
-                         <span className="text-[10px] opacity-50 block text-right mt-1">
-                           {new Date(m.timestamp).toLocaleTimeString()}
-                         </span>
+                   messages.length > 0 ? (
+                     messages.map((m, i) => (
+                       <div key={i} className={`flex ${m.isMine ? 'justify-end' : 'justify-start'} animate-fade-in`}>
+                         <div className={`max-w-[70%] p-3 rounded-lg shadow-md ${m.isMine ? 'bg-blue-600 rounded-tr-none' : 'bg-gray-700 rounded-tl-none'}`}>
+                           <p className="text-sm">{m.body}</p>
+                           <span className="text-[10px] opacity-50 block text-right mt-1">
+                             {new Date(m.timestamp).toLocaleTimeString()}
+                           </span>
+                         </div>
                        </div>
-                     </div>
-                   ))
+                     ))
+                   ) : (
+                     <div className="h-full flex items-center justify-center text-gray-500 text-sm">Aguardando mensagens...</div>
+                   )
                  ) : (
-                   <div className="h-full flex items-center justify-center text-gray-500">Selecione uma conversa</div>
+                   <div className="h-full flex flex-col items-center justify-center text-gray-500 gap-2">
+                     <span className="text-4xl">💬</span>
+                     <span>Selecione uma conversa</span>
+                   </div>
                  )}
                </div>
                
@@ -203,13 +212,14 @@ const Dashboard: React.FC = () => {
                    value={replyText}
                    onChange={e => setReplyText(e.target.value)}
                    placeholder="Digite sua resposta..."
-                   className="flex-1 bg-black/40 border border-white/10 rounded-lg px-4 py-2 focus:outline-none"
+                   className="flex-1 bg-black/40 border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors"
                    disabled={!activeChat}
+                   onKeyPress={e => e.key === 'Enter' && handleSendMessage()}
                  />
                  <button 
                    onClick={handleSendMessage}
                    disabled={!activeChat}
-                   className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg font-bold"
+                   className="bg-blue-600 hover:bg-blue-500 px-6 py-2 rounded-lg font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                  >
                    Enviar
                  </button>

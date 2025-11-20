@@ -37,8 +37,8 @@ const LogicBuilder: React.FC<Props> = ({ selectedSessionId }) => {
       const { json, txt } = await generateBotLogic(description);
       setGeneratedJson(json);
       setGeneratedTxt(txt);
-    } catch (error) {
-      alert("Erro ao gerar lógica: " + error);
+    } catch (error: any) {
+      alert("Erro ao gerar lógica: " + error.message);
     } finally {
       setIsGenerating(false);
     }

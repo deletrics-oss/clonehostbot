@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
@@ -41,7 +40,6 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 // Logic Builder Wrapper page
 const LogicPage = () => {
-  // Need selected session for logic saving
   const [sessions, setSessions] = useState<Session[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -60,7 +58,7 @@ const LogicPage = () => {
   }, []);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col animate-fade-in">
       <div className="mb-4 flex items-center gap-4">
          <h1 className="text-2xl font-bold">Construtor de Lógica</h1>
          {error && (
@@ -92,7 +90,6 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         
-        {/* Subscription route is protected by auth, but not by subscription check itself (to avoid loop) */}
         <Route path="/subscription" element={
            localStorage.getItem('isAuthenticated') === 'true' ? <Subscription /> : <Navigate to="/login" />
         } />
@@ -105,7 +102,6 @@ const App: React.FC = () => {
         
         <Route path="/chat" element={
           <ProtectedRoute>
-             {/* Reuse dashboard with chat focus */}
              <Dashboard /> 
           </ProtectedRoute>
         } />

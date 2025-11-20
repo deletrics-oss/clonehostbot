@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 
 export const generateBotLogic = async (description: string): Promise<{ json: string, txt: string }> => {
+  // Initialize using the key injected by Vite
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   const prompt = `
@@ -32,20 +33,25 @@ export const generateBotLogic = async (description: string): Promise<{ json: str
     Do not use markdown code blocks. Just raw text.
   `;
 
-  const result = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt
-  });
+  try {
+    const result = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt
+    });
 
-  const responseText = result.text || "";
-  const [jsonPart, txtPart] = responseText.split("|||DIVIDER|||");
+    const responseText = result.text || "";
+    const [jsonPart, txtPart] = responseText.split("|||DIVIDER|||");
 
-  // Clean up potential markdown artifacts if the model ignores instructions
-  const cleanJson = jsonPart ? jsonPart.replace(/```json/g, '').replace(/```/g, '').trim() : "";
-  const cleanTxt = txtPart ? txtPart.replace(/```txt/g, '').replace(/```/g, '').trim() : "";
+    // Clean up potential markdown artifacts
+    const cleanJson = jsonPart ? jsonPart.replace(/```json/g, '').replace(/```/g, '').trim() : "";
+    const cleanTxt = txtPart ? txtPart.replace(/```txt/g, '').replace(/```/g, '').trim() : "";
 
-  return {
-    json: cleanJson,
-    txt: cleanTxt
-  };
+    return {
+      json: cleanJson,
+      txt: cleanTxt
+    };
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    throw new Error("Falha ao gerar inteligência. Verifique sua chave de API.");
+  }
 };

@@ -7,6 +7,7 @@ export const API_BASE_URL = `${isSecure ? 'https' : 'http'}://${SERVER_HOST}/api
 export const WS_URL = `${isSecure ? 'wss' : 'ws'}://${SERVER_HOST}`;
 
 // Stripe Configuration
+// Fix TS error by casting import.meta
 export const STRIPE_PUBLIC_KEY = (import.meta as any).env?.VITE_STRIPE_PUBLIC_KEY || 'prod_TSBFZleC61Rm5y';
 
 export const STRIPE_PRODUCTS = [

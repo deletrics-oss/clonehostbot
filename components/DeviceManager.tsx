@@ -16,7 +16,7 @@ const DeviceManager: React.FC<Props> = ({ sessions, onSessionChange, selectedSes
   const [pollErrorCount, setPollErrorCount] = useState(0);
 
   useEffect(() => {
-    let interval: any = null; // Using any to avoid NodeJS namespace issues in browser environment
+    let interval: ReturnType<typeof setInterval> | null = null;
     
     if (selectedSessionId && pollErrorCount < 3) { // Stop polling if too many errors
       const checkQr = async () => {
@@ -113,7 +113,7 @@ const DeviceManager: React.FC<Props> = ({ sessions, onSessionChange, selectedSes
       </div>
 
       {/* Device List */}
-      <div className="flex-1 overflow-y-auto space-y-2 mb-6 pr-2">
+      <div className="flex-1 overflow-y-auto space-y-2 mb-6 pr-2 custom-scrollbar">
         {sessions.map((session) => (
           <div
             key={session.id}
@@ -130,7 +130,7 @@ const DeviceManager: React.FC<Props> = ({ sessions, onSessionChange, selectedSes
                 session.status === 'QR_PENDING' ? 'bg-yellow-500 shadow-yellow-500/50' :
                 'bg-red-500'
               }`} />
-              <span className="font-medium">{session.id}</span>
+              <span className="font-medium text-sm">{session.id}</span>
             </div>
             <div className="flex gap-2">
               <button onClick={(e) => handleRestart(session.id, e)} className="p-1.5 hover:bg-white/10 rounded text-yellow-400" title="Reiniciar">🔄</button>
@@ -140,7 +140,7 @@ const DeviceManager: React.FC<Props> = ({ sessions, onSessionChange, selectedSes
         ))}
         
         {sessions.length === 0 && (
-          <div className="text-center text-gray-500 py-4">Nenhum dispositivo conectado</div>
+          <div className="text-center text-gray-500 py-4 text-sm">Nenhum dispositivo conectado</div>
         )}
       </div>
 

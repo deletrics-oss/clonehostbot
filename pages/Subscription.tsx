@@ -27,7 +27,7 @@ const Subscription: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-dark p-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-dark p-8 animate-fade-in">
       <h1 className="text-4xl font-bold mb-4 text-center bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
         Escolha seu Plano
       </h1>
@@ -39,7 +39,7 @@ const Subscription: React.FC = () => {
         {STRIPE_PRODUCTS.map((product) => (
           <div 
             key={product.id} 
-            className={`glass-panel p-8 flex flex-col relative transition-transform duration-300 hover:-translate-y-2 ${
+            className={`glass-panel p-8 flex flex-col relative transition-all duration-300 hover:-translate-y-2 ${
               product.key === 'fixed_bot' 
                 ? 'border-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.3)] bg-blue-900/20' 
                 : 'hover:bg-white/5'

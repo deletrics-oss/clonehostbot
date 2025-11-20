@@ -1,4 +1,3 @@
-
 import { API_BASE_URL } from '../constants';
 import { Session } from '../types';
 
@@ -6,8 +5,7 @@ import { Session } from '../types';
 const request = async (endpoint: string, options: RequestInit = {}) => {
   try {
     const url = `${API_BASE_URL}${endpoint}`;
-    // console.log(`Fetching: ${url}`); // Debug log
-
+    
     const res = await fetch(url, {
       ...options,
       headers: {
